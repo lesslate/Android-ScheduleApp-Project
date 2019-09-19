@@ -37,14 +37,6 @@ public class addschedule extends Activity
         SeletedDate = intent.getStringExtra("SelectedDate");
         mDateText.setText(SeletedDate);
 
-//        if (intent != null)
-//        {
-//            mMemoId = intent.getLongExtra("id", -1);
-//            String title = intent.getStringExtra("title");
-//            String contents = intent.getStringExtra("contents");
-//            mTitleText.setText(title);
-//            mContentText.setText(contents);
-//        }
 
     }
 

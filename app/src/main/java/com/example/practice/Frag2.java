@@ -1,24 +1,17 @@
 package com.example.practice;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
+
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -29,8 +22,6 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,17 +37,16 @@ public class Frag2 extends Fragment
     private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/M/d"); // 날짜 포맷
     private String mTime;
     private RecyclerView recyclerView;
-    //private MemoAdapter mAdapter;
-    TextAdapter textAdapter;
+    private TextAdapter textAdapter;
+    private MemoDBHelper dbHelper;
+    private ArrayList<String> list;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.frag2, container, false);
-
-
-        ArrayList<String> list = new ArrayList<>();
+        list = new ArrayList<>();
 
         mCalendarView = (CalendarView) view.findViewById(R.id.calendarView);
         mTextDate = (TextView) view.findViewById(R.id.whenDate);
@@ -86,27 +76,55 @@ public class Frag2 extends Fragment
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
             {
                 mTime = year + "/" + (month + 1) + "/" + dayOfMonth;
+                getMemoCursor(); // 선택한 날짜의 메모 가져옴
                 mTextDate.setText(mTime); // 선택한 날짜로 설정
 
             }
         });
 
+        // dbHelper 인스턴스 저장
+        dbHelper = MemoDBHelper.getInstance(getActivity());
 
-        Cursor cursor = getMemoCursor();
 
-        //mAdapter = new MemoAdapter(getActivity(), cursor);
+
+        // 리사이클러뷰 LinearLayoutManager 객체 지정
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        // 어댑터 객체 생성
         textAdapter = new TextAdapter(list);
+
+        // DB 에서 list 값저장
+        getMemoCursor();
+
+        // recyclerView 어댑터 객체 지정
         recyclerView.setAdapter(textAdapter);
 
         return view;
     }
 
-    private Cursor getMemoCursor()
+    // 커서의 데이터를 Arraylist에 저장하는 메서드
+    private void getMemoCursor()
     {
-        MemoDBHelper dbHelper = MemoDBHelper.getInstance(getActivity());
-        return dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, null, null, null, null, null);
+        String[] params = {mTime};
+//        Cursor testCursor = dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, null, null, null, null, null);
+//        while (testCusor.moveToNext())
+//        {
+//            String id = testCusor.getString(testCusor.getColumnIndex(MemoContract.MemoEntry._ID));
+//            String Date = testCusor.getString(testCusor.getColumnIndex(MemoContract.MemoEntry.DATE));
+//            String Title = testCusor.getString(testCusor.getColumnIndex(MemoContract.MemoEntry.COLUMN_NAME_TITLE));
+//            String Content = testCusor.getString(testCusor.getColumnIndex(MemoContract.MemoEntry.COLUMN_NAME_CONTENTS));
+//            Log.e("Frag2",id + Date + Title + Content);
+//        }
+        list.clear();
+
+        Cursor cursor = dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, "date=?", params, null, null, null);
+
+        while (cursor.moveToNext())
+        {
+            list.add(cursor.getString(cursor.getColumnIndex(MemoContract.MemoEntry.COLUMN_NAME_TITLE)));
+        }
+
+        textAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -115,32 +133,11 @@ public class Frag2 extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (requestCode == REQUEST_CODE_INSERT )
+        if (requestCode == REQUEST_CODE_INSERT)
         {
-            //mAdapter.swapCursor(getMemoCursor());
+            getMemoCursor();
         }
     }
-
-//    private static class MemoAdapter extends CursorAdapter
-//    {
-//
-//        public MemoAdapter(Context context, Cursor c)
-//        {
-//            super(context, c, false);
-//        }
-//
-//        @Override
-//        public View newView(Context context, Cursor cursor, ViewGroup parent)
-//        {
-//            return LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
-//        }
-//
-//        @Override
-//        public void bindView(View view, Context context, Cursor cursor)
-//        {
-//            TextView titleText = view.findViewById(android.R.id.text1);
-//            titleText.setText(cursor.getString(cursor.getColumnIndexOrThrow(MemoContract.MemoEntry.DATE)));
-//        }
-//    }
 }
+
 
