@@ -86,7 +86,6 @@ public class Frag2 extends Fragment
         dbHelper = MemoDBHelper.getInstance(getActivity());
 
 
-
         // 리사이클러뷰 LinearLayoutManager 객체 지정
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
