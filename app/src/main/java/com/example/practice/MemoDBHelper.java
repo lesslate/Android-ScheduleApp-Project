@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class MemoDBHelper extends SQLiteOpenHelper
 {
-    private static MemoDBHelper sInstance;
+    private static MemoDBHelper sInstance; // 싱글턴 인스턴스 선언
 
     private static final int DB_VERSION=1;
     private static final String  DB_NAME="Memo.db";
@@ -25,14 +25,14 @@ public class MemoDBHelper extends SQLiteOpenHelper
 
     public static MemoDBHelper getInstance(Context context)
     {
-        if(sInstance==null)
+        if(sInstance==null) // 인스턴스가 없으면 생성
         {
             sInstance=new MemoDBHelper(context);
         }
         return sInstance;
     }
 
-    private MemoDBHelper(@Nullable Context context)
+    private MemoDBHelper(@Nullable Context context) // private로 하여 외부생성 X
     {
         super(context, DB_NAME, null, DB_VERSION);
     }

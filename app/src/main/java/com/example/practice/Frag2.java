@@ -1,6 +1,8 @@
 package com.example.practice;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.database.Cursor;
+import android.widget.Toast;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -78,9 +81,10 @@ public class Frag2 extends Fragment
                 mTime = year + "/" + (month + 1) + "/" + dayOfMonth;
                 getMemoCursor(); // 선택한 날짜의 메모 가져옴
                 mTextDate.setText(mTime); // 선택한 날짜로 설정
-
             }
         });
+
+
 
         // dbHelper 인스턴스 저장
         dbHelper = MemoDBHelper.getInstance(getActivity());
@@ -97,6 +101,69 @@ public class Frag2 extends Fragment
 
         // recyclerView 어댑터 객체 지정
         recyclerView.setAdapter(textAdapter);
+
+        // 메모 클릭 이벤트(수정)
+        textAdapter.setOnItemClickListener(new TextAdapter.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(View v, int pos)
+            {
+                Intent intent = new Intent(getActivity(), addschedule.class);
+                intent.putExtra("SelectedDate", mTime);
+
+                String[] params = {mTime};
+                Cursor cursor = (Cursor) dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, "date=?", params, null, null, null);
+                cursor.moveToPosition(pos);
+
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MemoContract.MemoEntry._ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(MemoContract.MemoEntry.COLUMN_NAME_TITLE));
+                String contents = cursor.getString(cursor.getColumnIndexOrThrow(MemoContract.MemoEntry.COLUMN_NAME_CONTENTS));
+
+                intent.putExtra("id",id);
+                intent.putExtra("title",title);
+                intent.putExtra("contents",contents);
+
+                startActivityForResult(intent, REQUEST_CODE_INSERT);
+            }
+        });
+
+        textAdapter.setOnItemLongClickListener(new TextAdapter.OnItemLongClickListener()
+        {
+            @Override
+            public void onItemLongClick(View v, int pos)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                String[] params = {mTime};
+                Cursor cursor = (Cursor) dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, "date=?", params, null, null, null);
+                cursor.moveToPosition(pos);
+                final int id = cursor.getInt(cursor.getColumnIndexOrThrow(MemoContract.MemoEntry._ID));
+
+                builder.setTitle("일정 삭제");
+                builder.setMessage("일정을 삭제하시겠습니까?");
+                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        int deletedCount = db.delete(MemoContract.MemoEntry.TABLE_NAME,MemoContract.MemoEntry._ID+"="+id,null);
+
+                        if(deletedCount==0)
+                        {
+                            Toast.makeText(getActivity(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            getMemoCursor();
+                            Toast.makeText(getActivity(), "일정이 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("취소",null);
+                builder.show();
+            }
+        });
 
         return view;
     }

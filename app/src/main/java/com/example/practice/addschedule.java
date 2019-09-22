@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class addschedule extends Activity
     private EditText mTitleText;
     private EditText mContentText;
     private String SeletedDate;
-    private long mMemoId = -1;
+    private int mMemoID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -34,8 +35,22 @@ public class addschedule extends Activity
 
 
         Intent intent = getIntent();
-        SeletedDate = intent.getStringExtra("SelectedDate");
-        mDateText.setText(SeletedDate);
+        if(intent != null)
+        {
+            SeletedDate = intent.getStringExtra("SelectedDate");
+            mDateText.setText(SeletedDate);
+
+            mMemoID = intent.getIntExtra("id",-1);
+
+            if(mMemoID!=-1)
+            {
+                String title = intent.getStringExtra("title");
+                String contents = intent.getStringExtra("contents");
+
+                mTitleText.setText(title);
+                mContentText.setText(contents);
+            }
+        }
 
 
     }
@@ -49,16 +64,23 @@ public class addschedule extends Activity
         String title = mTitleText.getText().toString();
         String contents = mContentText.getText().toString();
 
+        if(TextUtils.isEmpty(title)) // 제목이 비어있는지 판단
+        {
+            Toast.makeText(this, "제목을 입력해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 저장할 데이터를 contentValues에 저장
         ContentValues contentValues = new ContentValues();
         contentValues.put(MemoContract.MemoEntry.DATE,SeletedDate);
         contentValues.put(MemoContract.MemoEntry.COLUMN_NAME_TITLE, title);
         contentValues.put(MemoContract.MemoEntry.COLUMN_NAME_CONTENTS, contents);
 
-
+        // helper 인스턴스에서 쓰기가능한 데이터베이스를 가져옴
         SQLiteDatabase db = MemoDBHelper.getInstance(this).getWritableDatabase();
 
 
-        if (mMemoId == -1)
+        if (mMemoID == -1)
         {
             long newRowId = db.insert(MemoContract.MemoEntry.TABLE_NAME, null, contentValues);
 
@@ -74,7 +96,7 @@ public class addschedule extends Activity
 
         } else
         {
-            int count = db.update(MemoContract.MemoEntry.TABLE_NAME,contentValues,MemoContract.MemoEntry._ID+"="+mMemoId,null);
+            int count = db.update(MemoContract.MemoEntry.TABLE_NAME,contentValues,MemoContract.MemoEntry._ID+"="+mMemoID,null);
 
             if(count==0)
             {
