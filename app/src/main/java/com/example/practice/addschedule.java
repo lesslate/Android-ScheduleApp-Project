@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class addschedule extends Activity
+public class addschedule extends AppCompatActivity
 {
     private TextView mDateText;
     private EditText mTitleText;
@@ -24,12 +27,30 @@ public class addschedule extends Activity
     private int mMemoID;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if(id==R.id.action_search)
+        {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addschedule);
 
-        mDateText = (TextView) findViewById(R.id.TextDate);
+        //mDateText = (TextView) findViewById(R.id.TextDate);
         mTitleText = (EditText) findViewById(R.id.Title_Edit);
         mContentText = (EditText) findViewById(R.id.Cotent_Edit);
 
@@ -38,7 +59,7 @@ public class addschedule extends Activity
         if(intent != null)
         {
             SeletedDate = intent.getStringExtra("SelectedDate");
-            mDateText.setText(SeletedDate);
+            //mDateText.setText(SeletedDate);
 
             mMemoID = intent.getIntExtra("id",-1);
 

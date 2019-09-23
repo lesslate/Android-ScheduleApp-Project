@@ -49,4 +49,9 @@ public class MemoDBHelper extends SQLiteOpenHelper
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
+    public void DropTable(SQLiteDatabase db)
+    {
+        db.delete(MemoContract.MemoEntry.TABLE_NAME, null, null);
+    }
 }

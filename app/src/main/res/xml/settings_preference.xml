@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="데이터 설정" />
+
+    <Preference
+        android:key="reset"
+        android:title="일정 초기화">
+    </Preference>
+
+
+    <PreferenceCategory
+        android:title="테마 설정"
+        />
+
+    <Preference
+        android:key="theme_setting"
+        android:title="테마 바꾸기"
+        android:summary="현재테마 : default"
+        android:enabled="false" >
+    </Preference>
+
+    <PreferenceCategory
+        android:title="기타"
+        />
+
+    <Preference
+        android:key="review"
+        android:title="구글스토어 리뷰">
+    </Preference>
+
+    <Preference
+        android:key="feedback"
+        android:title="피드백/건의">
+    </Preference>
+
+
+</PreferenceScreen>

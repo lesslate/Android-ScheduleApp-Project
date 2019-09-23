@@ -14,7 +14,7 @@
 
     </item>
 
-    <item android:top="0dp" android:bottom="1dp">
+    <item android:top="1dp" android:bottom="1dp">
 
         <shape android:shape="rectangle">
 

@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,7 @@ public class Frag2 extends Fragment
     private TextAdapter textAdapter;
     private MemoDBHelper dbHelper;
     private ArrayList<String> list;
+    private TextView textview;
 
     @Nullable
     @Override
@@ -55,6 +57,13 @@ public class Frag2 extends Fragment
         mTextDate = (TextView) view.findViewById(R.id.whenDate);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler1);
+        textview=(TextView) view.findViewById(R.id.scheduleText);
+
+
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("일정 추가");
+
+
 
 
         Date date = new Date();
@@ -127,6 +136,7 @@ public class Frag2 extends Fragment
             }
         });
 
+        // 일정 삭제(롱클릭)
         textAdapter.setOnItemLongClickListener(new TextAdapter.OnItemLongClickListener()
         {
             @Override
@@ -188,6 +198,16 @@ public class Frag2 extends Fragment
         while (cursor.moveToNext())
         {
             list.add(cursor.getString(cursor.getColumnIndex(MemoContract.MemoEntry.COLUMN_NAME_TITLE)));
+        }
+
+        // 리스트가 없으면 일정없음 텍스트 표시
+        if(list.size()>0)
+        {
+            textview.setVisibility(view.GONE);
+        }
+        else
+        {
+            textview.setVisibility(view.VISIBLE);
         }
 
         textAdapter.notifyDataSetChanged();

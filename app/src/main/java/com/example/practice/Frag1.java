@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +18,7 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,7 @@ public class Frag1 extends Fragment
     private ArrayList<String> list;
     private RecyclerView recyclerView;
     private TextAdapter textAdapter;
+    private TextView textview;
 
     @Nullable
     @Override
@@ -44,6 +47,12 @@ public class Frag1 extends Fragment
         list = new ArrayList<>();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler0);
+        textview=(TextView) view.findViewById(R.id.textview);
+
+
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("오늘의 일정");
+
 
         // dbHelper 인스턴스 저장
         dbHelper = MemoDBHelper.getInstance(getActivity());
@@ -137,6 +146,16 @@ public class Frag1 extends Fragment
         while (cursor.moveToNext())
         {
             list.add(cursor.getString(cursor.getColumnIndex(MemoContract.MemoEntry.COLUMN_NAME_TITLE)));
+        }
+
+        // 리스트가 없으면 일정없음 텍스트 표시
+        if(list.size()>0)
+        {
+            textview.setVisibility(view.GONE);
+        }
+        else
+        {
+            textview.setVisibility(view.VISIBLE);
         }
 
         textAdapter.notifyDataSetChanged();
