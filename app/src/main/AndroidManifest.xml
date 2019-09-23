@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.practice">
+    package="com.todayschedule.practice">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label=""
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher_calendar"
+        android:label="오늘의 일정"
+        android:roundIcon="@mipmap/ic_launcher_calendar_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity">
+            android:name="com.todayschedule.practice.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name=".addschedule"
+            android:name="com.todayschedule.practice.addschedule"
             android:label="일정 추가"
             />
 

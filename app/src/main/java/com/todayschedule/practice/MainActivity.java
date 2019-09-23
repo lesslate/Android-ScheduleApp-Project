@@ -1,4 +1,4 @@
-package com.example.practice;
+package com.todayschedule.practice;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;

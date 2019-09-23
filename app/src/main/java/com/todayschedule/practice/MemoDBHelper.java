@@ -1,4 +1,4 @@
-package com.example.practice;
+package com.todayschedule.practice;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
