@@ -13,6 +13,9 @@
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
+
+            android:dateTextAppearance="@style/CalendarViewDateCustomText"
+            android:weekDayTextAppearance="@style/CalendarViewWeekCustomText"
             android:layout_height="wrap_content"/>
 
 
@@ -22,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/calendarView"
             android:gravity="center_horizontal"
+            android:textColor="?attr/textcolor"
             android:text="date"
             android:textSize="24dp"/>
 
@@ -30,6 +34,7 @@
             android:layout_below="@+id/whenDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/textcolor"
             android:textSize="18dp"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"

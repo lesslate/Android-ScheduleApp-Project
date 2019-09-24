@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 import android.app.ActionBar;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 
 public class Frag3 extends PreferenceFragmentCompat
@@ -21,6 +23,7 @@ public class Frag3 extends PreferenceFragmentCompat
     private View view;
     private Preference resetPreference;
     private Preference sendFeedback;
+    private SwitchPreferenceCompat switchdark;
 
 
     @Override
@@ -30,13 +33,48 @@ public class Frag3 extends PreferenceFragmentCompat
 
 
         dbHelper = MemoDBHelper.getInstance(getActivity());
-        resetPreference =(Preference) findPreference("reset");
-        sendFeedback =(Preference) findPreference("feedback");
+        resetPreference = (Preference) findPreference("reset");
+        sendFeedback = (Preference) findPreference("feedback");
+        switchdark = (SwitchPreferenceCompat) findPreference("theme_setting");
 
-        androidx.appcompat.app.ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        // 액션바 이름
+        androidx.appcompat.app.ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         actionBar.setTitle("설정");
 
+        // 야간 모드일시 스위치 상태
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
+        {
+            switchdark.setChecked(true);
+        }
+        else
+        {
+            switchdark.setChecked(false);
+        }
 
+        // 앱 테마 변경
+        switchdark.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if(switchdark.isChecked())
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    switchdark.setChecked(false);
+                    restartApp();
+                }
+                else
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    switchdark.setChecked(true);
+                    restartApp();
+                }
+                return false;
+            }
+        });
+
+
+        // 일정 초기화
         resetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             @Override
@@ -56,12 +94,13 @@ public class Frag3 extends PreferenceFragmentCompat
                         Toast.makeText(getActivity(), "모든 일정이 삭제되었습니다", Toast.LENGTH_SHORT).show();
                     }
                 });
-                builder.setNegativeButton("취소",null);
+                builder.setNegativeButton("취소", null);
                 builder.show();
                 return false;
             }
         });
 
+        // 피드백 메일보내기
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             @Override
@@ -72,8 +111,8 @@ public class Frag3 extends PreferenceFragmentCompat
 
                 String[] address = {"lesslate9@naver.com"};
                 email.putExtra(Intent.EXTRA_EMAIL, address);
-                email.putExtra(Intent.EXTRA_SUBJECT,"");
-                email.putExtra(Intent.EXTRA_TEXT,"");
+                email.putExtra(Intent.EXTRA_SUBJECT, "");
+                email.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(email);
 
                 return false;
@@ -81,6 +120,16 @@ public class Frag3 extends PreferenceFragmentCompat
         });
 
     }
+
+    // 테마 변경시 앱 재시작
+    public void restartApp()
+    {
+        Intent intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+
 
 //    @Nullable
 //    @Override

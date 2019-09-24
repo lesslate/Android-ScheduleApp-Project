@@ -19,6 +19,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,7 @@ public class Frag1 extends Fragment
     private RecyclerView recyclerView;
     private TextAdapter textAdapter;
     private TextView textview;
+    private AlertDialog.Builder builder;
 
     @Nullable
     @Override
@@ -50,6 +52,15 @@ public class Frag1 extends Fragment
         textview=(TextView) view.findViewById(R.id.textview);
 
 
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        {
+            builder =  new AlertDialog.Builder(getActivity(), R.style.Dialog);
+        }
+        else
+        {
+
+            builder =  new AlertDialog.Builder(getActivity());
+        }
         ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("오늘의 일정");
 
@@ -98,7 +109,7 @@ public class Frag1 extends Fragment
             @Override
             public void onItemLongClick(View v, int pos)
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                 String[] params = {mTime};
                 Cursor cursor = (Cursor) dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, "date=?", params, null, null, null);

@@ -5,6 +5,7 @@
         android:id="@+id/action_today"
         android:enabled="true"
         android:icon="@drawable/ic_check_black_24dp"
+
         android:title="오늘의 일정"/>
 
     <item

@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +46,8 @@ public class Frag2 extends Fragment
     private MemoDBHelper dbHelper;
     private ArrayList<String> list;
     private TextView textview;
+    private AlertDialog.Builder builder;
+
 
     @Nullable
     @Override
@@ -92,6 +95,21 @@ public class Frag2 extends Fragment
                 mTextDate.setText(mTime); // 선택한 날짜로 설정
             }
         });
+
+        // 테마에 따른 캘린더, Dialog 스타일 변경
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        {
+            mCalendarView.setDateTextAppearance(R.style.CalendarViewDateCustomText);
+            mCalendarView.setWeekDayTextAppearance(R.style.CalendarViewWeekCustomText);
+            builder =  new AlertDialog.Builder(getActivity(), R.style.Dialog);
+        }
+        else
+        {
+            mCalendarView.setDateTextAppearance(R.style.DefaultCalendarViewDateCustomText);
+            mCalendarView.setWeekDayTextAppearance(R.style.DefaultCalendarViewWeekCustomText);
+            builder =  new AlertDialog.Builder(getActivity());
+        }
+
 
 
 
@@ -142,7 +160,9 @@ public class Frag2 extends Fragment
             @Override
             public void onItemLongClick(View v, int pos)
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+               //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Dialog);
+
 
                 String[] params = {mTime};
                 Cursor cursor = (Cursor) dbHelper.getReadableDatabase().query(MemoContract.MemoEntry.TABLE_NAME, null, "date=?", params, null, null, null);

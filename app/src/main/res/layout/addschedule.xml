@@ -3,6 +3,7 @@
 
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="?attr/backgroundcolor"
     android:layout_height="match_parent">
 
 
@@ -24,8 +25,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:maxLines="1"
+        android:textColor="?attr/textcolor"
         android:ems="10"
         android:hint="제목"
+        android:textColorHint="?attr/textcolor"
         android:inputType="textPersonName" />
 
     <EditText
@@ -34,6 +37,7 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="#00FFFFFF"
+        android:textColor="?attr/textcolor"
         android:ems="10"
         android:gravity="top"
         android:inputType="textPersonName"

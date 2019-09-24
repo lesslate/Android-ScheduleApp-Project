@@ -16,7 +16,7 @@
             android:layout_margin="20dp"
             android:gravity="center_horizontal"
             android:text="추가된 일정이 없습니다"
-            android:textColor="#B0040909"
+            android:textColor="?attr/textcolor"
             android:textSize="24sp"
             android:textStyle="normal|bold" />
 
