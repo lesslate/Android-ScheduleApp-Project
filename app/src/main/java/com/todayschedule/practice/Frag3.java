@@ -24,7 +24,7 @@ public class Frag3 extends PreferenceFragmentCompat
     private Preference resetPreference;
     private Preference sendFeedback;
     private SwitchPreferenceCompat switchdark;
-
+    private AlertDialog.Builder builder;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
@@ -37,18 +37,21 @@ public class Frag3 extends PreferenceFragmentCompat
         sendFeedback = (Preference) findPreference("feedback");
         switchdark = (SwitchPreferenceCompat) findPreference("theme_setting");
 
+
         // 액션바 이름
         androidx.appcompat.app.ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         actionBar.setTitle("설정");
 
-        // 야간 모드일시 스위치 상태
+        // 스위치 상태, 다이얼로그
         if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
         {
             switchdark.setChecked(true);
+            builder = new AlertDialog.Builder(getActivity(),R.style.Dialog);
         }
         else
         {
             switchdark.setChecked(false);
+            builder = new AlertDialog.Builder(getActivity());
         }
 
         // 앱 테마 변경
@@ -80,7 +83,7 @@ public class Frag3 extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceClick(Preference preference)
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
 
                 builder.setTitle("초기화");
                 builder.setMessage("모든 일정을 삭제하시겠습니까?");
