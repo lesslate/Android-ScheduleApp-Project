@@ -36,6 +36,7 @@ public class Frag1 extends Fragment
     private TextAdapter textAdapter;
     private TextView textview;
     private AlertDialog.Builder builder;
+    private SharedPref sharedPref;
 
     @Nullable
     @Override
@@ -50,9 +51,9 @@ public class Frag1 extends Fragment
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler0);
         textview=(TextView) view.findViewById(R.id.textview);
+        sharedPref=new SharedPref(getActivity());
 
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        if (sharedPref.loadNightModeState())
         {
             builder =  new AlertDialog.Builder(getActivity(), R.style.Dialog);
         }

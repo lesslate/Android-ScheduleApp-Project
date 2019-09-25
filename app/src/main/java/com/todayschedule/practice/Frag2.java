@@ -47,6 +47,7 @@ public class Frag2 extends Fragment
     private ArrayList<String> list;
     private TextView textview;
     private AlertDialog.Builder builder;
+    private SharedPref sharedPref;
 
 
     @Nullable
@@ -61,7 +62,7 @@ public class Frag2 extends Fragment
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler1);
         textview=(TextView) view.findViewById(R.id.scheduleText);
-
+        sharedPref =new SharedPref(getActivity());
 
         ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("일정 추가");
@@ -97,7 +98,7 @@ public class Frag2 extends Fragment
         });
 
         // 테마에 따른 캘린더, Dialog 스타일 변경
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        if (sharedPref.loadNightModeState())
         {
             mCalendarView.setDateTextAppearance(R.style.CalendarViewDateCustomText);
             mCalendarView.setWeekDayTextAppearance(R.style.CalendarViewWeekCustomText);

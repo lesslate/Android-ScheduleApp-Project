@@ -25,6 +25,7 @@ public class Frag3 extends PreferenceFragmentCompat
     private Preference sendFeedback;
     private SwitchPreferenceCompat switchdark;
     private AlertDialog.Builder builder;
+    private SharedPref sharedPref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
@@ -36,14 +37,14 @@ public class Frag3 extends PreferenceFragmentCompat
         resetPreference = (Preference) findPreference("reset");
         sendFeedback = (Preference) findPreference("feedback");
         switchdark = (SwitchPreferenceCompat) findPreference("theme_setting");
-
+        sharedPref=new SharedPref(getActivity());
 
         // 액션바 이름
         androidx.appcompat.app.ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         actionBar.setTitle("설정");
 
         // 스위치 상태, 다이얼로그
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
+        if(sharedPref.loadNightModeState())
         {
             switchdark.setChecked(true);
             builder = new AlertDialog.Builder(getActivity(),R.style.Dialog);
@@ -62,14 +63,16 @@ public class Frag3 extends PreferenceFragmentCompat
             {
                 if(switchdark.isChecked())
                 {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    sharedPref.setNightModeState(false);
                     switchdark.setChecked(false);
                     restartApp();
                 }
                 else
                 {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    sharedPref.setNightModeState(true);
                     switchdark.setChecked(true);
+
                     restartApp();
                 }
                 return false;
@@ -131,8 +134,6 @@ public class Frag3 extends PreferenceFragmentCompat
         startActivity(intent);
         getActivity().finish();
     }
-
-
 
 //    @Nullable
 //    @Override

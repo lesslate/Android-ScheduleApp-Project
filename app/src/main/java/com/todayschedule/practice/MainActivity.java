@@ -20,12 +20,14 @@ public class MainActivity extends AppCompatActivity
     private Frag1 frag1;
     private Frag2 frag2;
     private Frag3 frag3;
+    private SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         // 테마 설정
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        sharedPref = new SharedPref(this);
+        if (sharedPref.loadNightModeState())
         {
             setTheme(R.style.DarkTheme);
         }
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity
         //setTheme(R.style.DarkTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
 

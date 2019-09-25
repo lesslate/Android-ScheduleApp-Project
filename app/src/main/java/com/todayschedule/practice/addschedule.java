@@ -22,6 +22,7 @@ public class addschedule extends AppCompatActivity
     private EditText mContentText;
     private String SeletedDate;
     private int mMemoID;
+    private SharedPref sharedPref;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -44,8 +45,10 @@ public class addschedule extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
+        sharedPref =new SharedPref(this);
+
         // 테마
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        if (sharedPref.loadNightModeState())
         {
             setTheme(R.style.DarkTheme);
         }
