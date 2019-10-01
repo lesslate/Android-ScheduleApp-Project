@@ -3,6 +3,7 @@ package com.todayschedule.practice;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder>
 {
     private ArrayList<String> mData = null;
-
+    private SharedPref sharedPref;
     private Context mContext;
     private Cursor mCursor;
-
+    private Typeface face;
+    // 커스텀 리스너 인터페이스
     public interface OnItemClickListener
     {
         void onItemClick(View v, int pos);
@@ -30,6 +32,7 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder>
         void onItemLongClick(View v, int pos);
     }
 
+    // 리스너 객체 참조를 저장하는 변수
     private OnItemClickListener mListener = null;
     private OnItemLongClickListener mLongListener = null;
 
@@ -64,13 +67,13 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder>
                 @Override
                 public void onClick(View v)
                 {
-                    //Intent intent = new Intent(v.getContext(),addschedule.class);
+
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION)
                     {
                         mListener.onItemClick(v, pos);
                     }
-                    //v.getContext().startActivity(intent);
+
                 }
             });
 
@@ -102,6 +105,8 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder>
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        sharedPref =new SharedPref(context);
+
         View view = inflater.inflate(R.layout.recyclerview_item, parent, false);
         TextAdapter.ViewHolder vh = new TextAdapter.ViewHolder(view);
 
@@ -113,7 +118,17 @@ public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
+        if(sharedPref.loadFont())
+        {
+             face= Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/scdream5.otf");
+        }
+        else
+        {
+             face= Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/scdream2.otf");
+        }
+
         String text = mData.get(position);
+        holder.textView1.setTypeface(face);
         holder.textView1.setText(text);
     }
 

@@ -12,12 +12,18 @@
 
 
     <PreferenceCategory
-        android:title="테마 설정"
+        android:title="화면 설정"
         />
 
     <SwitchPreferenceCompat
         android:key="theme_setting"
         android:title="블랙 테마"
+        android:enabled="true" >
+    </SwitchPreferenceCompat>
+
+    <SwitchPreferenceCompat
+        android:key="font_setting"
+        android:title="폰트 굵게"
         android:enabled="true" >
     </SwitchPreferenceCompat>
 
@@ -34,6 +40,16 @@
         android:key="feedback"
         android:title="피드백/건의">
     </Preference>
+
+    <PreferenceCategory
+        android:title="상단 알림 설정"
+        />
+
+    <SwitchPreferenceCompat
+        android:key="alarm_setting"
+        android:title="알림 설정"
+        android:enabled="true" >
+    </SwitchPreferenceCompat>
 
 
 </PreferenceScreen>

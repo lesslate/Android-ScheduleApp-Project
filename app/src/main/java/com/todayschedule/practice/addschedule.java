@@ -10,10 +10,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+
 
 public class addschedule extends AppCompatActivity
 {
@@ -73,6 +72,7 @@ public class addschedule extends AppCompatActivity
 
             mMemoID = intent.getIntExtra("id",-1);
 
+            // 받아온 ID가 있으면 테이블 수정으로 간주하여 타이틀과 컨텐츠를 불러온다.
             if(mMemoID!=-1)
             {
                 String title = intent.getStringExtra("title");
@@ -124,7 +124,7 @@ public class addschedule extends AppCompatActivity
                 setResult(RESULT_OK);
             }
 
-
+            // 받아온 ID값이 있으므로 데이터를 업데이트(수정) 시킨다.
         } else
         {
             int count = db.update(MemoContract.MemoEntry.TABLE_NAME,contentValues,MemoContract.MemoEntry._ID+"="+mMemoID,null);

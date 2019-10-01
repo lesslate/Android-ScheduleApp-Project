@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,10 +65,13 @@ public class Frag2 extends Fragment
         textview=(TextView) view.findViewById(R.id.scheduleText);
         sharedPref =new SharedPref(getActivity());
 
+
+
+
+
+
         ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("일정 추가");
-
-
 
 
         Date date = new Date();
@@ -232,8 +236,11 @@ public class Frag2 extends Fragment
         }
 
         textAdapter.notifyDataSetChanged();
+        ((MainActivity)MainActivity.mContext).show();
+
     }
 
+    // 일정 추가후 갱신
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {

@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.1"
             android:background="@drawable/border"
+            android:fontFamily="@font/scdream2"
             android:padding="10dp"
             android:text="title"
             android:textSize="32dp" />

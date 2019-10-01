@@ -11,15 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,6 +61,7 @@ public class Frag1 extends Fragment
         }
         ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("오늘의 일정");
+
 
 
         // dbHelper 인스턴스 저장
@@ -171,6 +169,8 @@ public class Frag1 extends Fragment
         }
 
         textAdapter.notifyDataSetChanged();
+        ((MainActivity)MainActivity.mContext).show();
+
     }
 
     // 메모 저장시 업데이트
